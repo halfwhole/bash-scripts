@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+#
+# This script requires the use of `sshpass`.
+# Place me in a directory in your PATH, allow execution, and you're good to go.
+#
+# Usage: soc-print <printer> [<file>]+
+# Example: soc-print pstsc-nb pset1.pdf pset2.pdf
+#
+# Options:
+# ==========> THIS IS A LIE <==========
+# -o2on1 for 2 pages on a physical page (not supported yet)
+# -o4on1 (does not seem to work!!)
+
+## Variables 
+printDir='.print'
+printer=$1
+shift
+files=("$@")
+
+## Printer validation: [psts/pstsb/pstsc/psc008/psc011]-nb allowed as of Feb 2020
+if [[ ! "$printer" =~ ^(psts|pstsb|pstsc|psc008|psc011)(-nb)?$ ]]; then
+    echo 'Please use one of these printers: [psts/pstsb/pstsc/psc008/psc011]-nb'
+    exit 1
+fi
+
+## File validation
+if [[ $# -eq 0 ]]; then
+    echo 'Please enter a file.'
+    exit 1
+fi
+for file in ${files[@]}; do
+    if [[ ! -f "$file" ]]; then
+        echo "$file is not a valid file."
+        exit 1
+    fi
+done
+
+## Get login details
+echo -n 'Username: '; read username
+echo -n 'Password: '; read -s password; echo
+domain=$username@sunfire.comp.nus.edu.sg
+sshpass -p $password ssh $domain -tt -q "exit"
+while [ $? -ne 0 ]; do
+    echo -n 'Password: '; read -s password; echo
+    sshpass -p $password ssh $domain -tt -q "exit"
+done
+
+## Print the files
+echo 'Making temp print directory...'
+sshpass -p $password ssh -tt -q $domain "mkdir -p $printDir" > /dev/null
+
+echo 'Copying files...'
+for file in ${files[@]}; do
+    sshpass -p $password scp $file $domain:$printDir$file > /dev/null
+done
+
+echo 'Printing files...'
+for file in ${files[@]}; do
+    sshpass -p $password ssh -q $domain "lpr -P $printer $printDir$file"
+done
+
+echo 'Deleting temp print directory...'
+sshpass -p $password ssh -tt -q $domain "unalias rm; rm -r $printDir" > /dev/null

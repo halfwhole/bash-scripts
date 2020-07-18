@@ -1,0 +1,46 @@
+#!/bin/bash
+#
+# This script extracts all the images only from a pdf document,
+# then converts them into a single text file via OCR.
+#
+# It requires the use of `pdfimages` and `tesseract`.
+
+pdfFile=$1
+origDir=$(pwd)
+resultFile="${pdfFile%.*}.txt"
+
+if [[ ! -f $pdfFile ]] || [[ ! ${pdfFile: -4} == '.pdf' ]]; then
+    echo "$pdfFile is not a pdf file."
+    exit 1
+fi
+
+## Create temp dir
+tmpDir="$(mktemp -d)/"
+
+## PDF -> [JPG]*
+pdfimages -j $pdfFile $tmpDir
+
+cd $tmpDir
+
+## [JPG]* -> [TXT]* -> TXT
+jpgs=$(ls $tmpDir)
+len=$(ls | wc -l)
+i=1
+for jpg in $jpgs; do
+    file="${jpg%.*}"
+    echo -ne "\rConverting image [$i/$len]... "
+    tesseract $jpg $file &> /dev/null
+    ## remove form feed and squeeze blank lines
+    sed 's/\f//' "./$file.txt" | cat -s >> $resultFile
+    rm "./$jpg" "./$file.txt"
+    let i=$i+1
+done
+
+## Copy over and remove temp directory
+mv $resultFile $origDir
+cd $origDir
+rm -r $tmpDir
+
+echo -ne "\r"
+
+exit 0
