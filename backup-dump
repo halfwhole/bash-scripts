@@ -1,0 +1,13 @@
+#!/bin/bash
+
+date=$(date -u +'%Y-%m-%d')
+backupDir='/media/suntoast/Backup Plus/BACKUPS/'
+backupDump="backup-$date.tar.gz"
+
+read -p "This will zip $backupDir into $backupDump. Continue? (y) " y
+if [[ $y != 'y' ]]; then
+    echo 'Exiting.'
+    exit 0
+fi
+
+tar -czvf "$backupDump" "$backupDir"

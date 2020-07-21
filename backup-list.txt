@@ -1,0 +1,14 @@
+# Directories
+~/Documents/
+~/Music/
+~/Pictures/
+~/Videos/
+~/Encfs/
+~/Downloads/
+~/Archives/
+
+# Dotfiles
+~/dotfiles/
+~/bash-scripts/
+~/.doom.d/
+~/.ssh/

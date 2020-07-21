@@ -1,0 +1,39 @@
+#!/bin/bash
+
+## Config
+scriptDir=$(dirname -- "$(readlink -f -- "$BASH_SOURCE")")
+BACKUP_LIST="$scriptDir/backup-list.txt"
+BACKUP_DIR='/media/suntoast/Backup Plus/BACKUPS/'
+
+origList=$(cat $BACKUP_LIST | grep -v -E '(^#|^\s*$)')  # Exclude empty lines and #s
+list=${origList//\~/$HOME}                              # Replace '~' with '$HOME'
+
+## Validate the backup locations
+invalid=false
+for item in $list; do
+    if [[ ! -f $item && ! -d $item ]]; then
+        echo "$item is invalid."
+        invalid=true
+    fi
+done
+if $invalid; then
+    exit 1
+fi
+
+## Prompt for confirmation
+echo 'These locations will be backed up:'
+for item in $origList; do
+    echo $item
+done
+read -p 'Do you wish to proceed? (y) ' y
+if [[ $y != 'y' ]]; then
+    echo 'Exiting.'
+    exit 0
+fi
+
+## Backup using rsync
+for item in $list; do
+    bname=$(basename $item)
+    location="$BACKUP_DIR$bname"
+    rsync -av --delete "$item" "$location"
+done
