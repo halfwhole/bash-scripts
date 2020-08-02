@@ -1,0 +1,18 @@
+#!/bin/bash
+
+BACKUP_DIR="$HOME/Documents/remote-backups"
+REMOTE_HOST_ALIAS="ziwei-do"
+
+mkdir -p $BACKUP_DIR
+
+# Backup blood-levels
+echo "Backing up blood-levels..."
+scp "$REMOTE_HOST_ALIAS:blood-levels/blood_levels.csv" "$BACKUP_DIR/blood_levels.csv"
+
+# Backup dengue-clusters
+echo "Backing up dengue-clusters..."
+scp -r "$REMOTE_HOST_ALIAS:dengue-clusters/data" "$BACKUP_DIR/dengue-clusters/"
+
+# Backup nlb-telegram-bot
+echo "Backing up nlb-telegram-bot..."
+ssh ziwei-do "docker exec nlb_db pg_dump --username postgres nlb" > "$BACKUP_DIR/nlb.sql"
