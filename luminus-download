@@ -1,0 +1,2 @@
+#!/bin/bash
+cd ~/Documents/CodeProjects/luminus-downloader/ && node main.js
