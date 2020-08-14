@@ -3,6 +3,15 @@
 BACKUP_DIR="$HOME/Documents/remote-backups"
 REMOTE_HOST_ALIAS="ziwei-do"
 
+# Prompt for confirmation
+echo "The backups will be written to $BACKUP_DIR."
+read -p 'Do you wish to proceed? (y) ' y
+if [[ $y != 'y' ]]; then
+    echo 'Exiting.'
+    exit 0
+fi
+
+# Make backup directory, if it doesn't already exist
 mkdir -p $BACKUP_DIR
 
 # Backup blood-levels
