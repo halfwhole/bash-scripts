@@ -1,2 +1,2 @@
 #!/bin/bash
-cd ~/Documents/CodeProjects/nus-temperature-declaration/ && python3 temperature.py
+cd ~/Documents/CodeProjects/nus-temperature-declaration/ && python3 temperature.py "$@"
