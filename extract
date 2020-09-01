@@ -9,7 +9,7 @@ pdfFile=$1
 origDir=$(pwd)
 resultFile="${pdfFile%.*}.txt"
 
-if [[ ! -f $pdfFile ]] || [[ ! ${pdfFile: -4} == '.pdf' ]]; then
+if [[ ! -f "$pdfFile" ]] || [[ ! ${pdfFile: -4} == '.pdf' ]]; then
     echo "$pdfFile is not a pdf file."
     exit 1
 fi
@@ -18,7 +18,7 @@ fi
 tmpDir="$(mktemp -d)/"
 
 ## PDF -> [JPG]*
-pdfimages -j $pdfFile $tmpDir
+pdfimages -j "$pdfFile" $tmpDir
 
 cd $tmpDir
 
@@ -31,13 +31,13 @@ for jpg in $jpgs; do
     echo -ne "\rConverting image [$i/$len]... "
     tesseract $jpg $file &> /dev/null
     ## remove form feed and squeeze blank lines
-    sed 's/\f//' "./$file.txt" | cat -s >> $resultFile
+    sed 's/\f//' "./$file.txt" | cat -s >> "$resultFile"
     rm "./$jpg" "./$file.txt"
     let i=$i+1
 done
 
 ## Copy over and remove temp directory
-mv $resultFile $origDir
+mv "$resultFile" $origDir
 cd $origDir
 rm -r $tmpDir
 
