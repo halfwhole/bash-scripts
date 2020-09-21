@@ -12,7 +12,7 @@ if [[ $y != 'y' ]]; then
 fi
 
 # Make backup directory, if it doesn't already exist
-mkdir -p $BACKUP_DIR
+mkdir -p "$BACKUP_DIR"
 
 # Backup blood-levels
 echo "Backing up blood-levels..."
@@ -25,3 +25,7 @@ scp -r "$REMOTE_HOST_ALIAS:dengue-clusters/data" "$BACKUP_DIR/dengue-clusters/"
 # Backup nlb-telegram-bot
 echo "Backing up nlb-telegram-bot..."
 ssh ziwei-do "docker exec nlb_db pg_dump --username postgres nlb" > "$BACKUP_DIR/nlb.sql"
+
+# Backup nus-temperature-declaration
+echo "Backing up nus-temperature-declaration..."
+scp -r "$REMOTE_HOST_ALIAS:nus-temperature-declaration/temp.log" "$BACKUP_DIR/temp.log"
