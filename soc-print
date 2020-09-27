@@ -3,19 +3,22 @@
 # This script requires the use of `sshpass`.
 # Place me in a directory in your PATH, allow execution, and you're good to go.
 #
-# Usage: soc-print <printer> [<file>]+
-# Example: soc-print pstsc-nb pset1.pdf pset2.pdf
+# Usage: soc-print [-d] <printer> [<file>]+
+# Example: soc-print -d pstsc-nb pset1.pdf pset2.pdf
 #
 # Options:
-# ==========> THIS IS A LIE <==========
-# -o2on1 for 2 pages on a physical page (not supported yet)
-# -o4on1 (does not seem to work!!)
+# -d: double-sided
 
 ## Variables 
-printDir='.print'
+printDir='.print/'
+doubleSided=false
+if [[ $1 == "-d" ]]; then
+    doubleSided=true
+    shift
+fi
 printer=$1
 shift
-files=("$@")
+files="$@"
 
 ## Printer validation: [psts/pstsb/pstsc/psc008/psc011]-nb allowed as of Feb 2020
 if [[ ! "$printer" =~ ^(psts|pstsb|pstsc|psc008|psc011)(-nb)?$ ]]; then
@@ -51,12 +54,18 @@ sshpass -p $password ssh -tt -q $domain "mkdir -p $printDir" > /dev/null
 
 echo 'Copying files...'
 for file in ${files[@]}; do
-    sshpass -p $password scp $file $domain:$printDir$file > /dev/null
+    sshpass -p $password scp "$file" "$domain:$printDir$file" > /dev/null
 done
+
+exit 0
 
 echo 'Printing files...'
 for file in ${files[@]}; do
-    sshpass -p $password ssh -q $domain "lpr -P $printer $printDir$file"
+    if $doubleSided; then
+        sshpass -p $password ssh -q $domain "lpr -P $printer -o sides=two-sided-long-edge $printDir$file"
+    else
+        sshpass -p $password ssh -q $domain "lpr -P $printer $printDir$file"
+    fi
 done
 
 echo 'Deleting temp print directory...'
