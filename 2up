@@ -1,0 +1,14 @@
+#!/bin/bash
+#
+# This script converts a PDF file to 2up landscape format.
+# Requires 'pdfjam'.
+# Usage: 2up <file.pdf>
+
+pdfFile=$1
+
+if [[ ! -f "$pdfFile" ]] || [[ ! ${pdfFile: -4} == '.pdf' ]]; then
+    echo "$pdfFile is not a pdf file."
+    exit 1
+fi
+
+pdfjam --batch --suffix 2up --nup 2x1 --landscape "$pdfFile"
