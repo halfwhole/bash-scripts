@@ -1,14 +1,20 @@
+import os
 import requests
 import sys
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from urllib.request import urlretrieve
 
+DEST_DIR = '~/Downloads'
 URL = "https://twittervideodownloader.com/"
 DOWNLOAD_URL = "https://twittervideodownloader.com/download"
 
 ## Get user input (arg #1)
-INPUT_URL = sys.argv[1]
+try:
+    INPUT_URL = sys.argv[1]
+except:
+    print("Usage: twitter-download URL")
+    sys.exit()
 
 ## Get download URLs and specs
 s = requests.Session()
@@ -29,7 +35,7 @@ download_specs = [desc.find('p').text for desc in download_descriptions]
 
 if not download_urls:
     print("No videos found, is your given URL '%s' correct?" % INPUT_URL)
-    sys.exit()
+    sys.exit(1)
 
 ## Display download specs to choose from
 for i in range(len(download_specs)):
@@ -42,6 +48,7 @@ chosen_option = int(input())-1
 ## Downloads video
 download_url = download_urls[chosen_option]
 video_name = urlparse(download_url).path.split('/')[-1]
-print('Downloading %s... ' % video_name, end='')
-urlretrieve(download_url, video_name)
+path_video_name = os.path.join(os.path.expanduser(DEST_DIR), video_name)
+print('Downloading %s to %s... ' % (video_name, DEST_DIR), end='', flush=True)
+urlretrieve(download_url, path_video_name)
 print('done!')
