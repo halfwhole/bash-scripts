@@ -13,6 +13,7 @@ Scripts that I use from time to time.
 | `kill-emacs`                    | Kills emacs, because it freezes way too often. Please fix :( |
 | `luminus-download`              | Downloads files and folders from LumiNUS to my local directory. It runs the main script from my `luminus-downloader` project. |
 | `soc-print <printer> [<file>]+` | Sends print jobs for selected files to a selected SoC printer over sunfire. |
+| `twitter-download <url>`        | Downloads a Twitter video given its URL. |
 | `2up <pdf>`                     | Converts a PDF file to 2-up in landscape format, with suffix `-2up`. |
 
 ## Setup
