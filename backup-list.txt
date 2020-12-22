@@ -11,4 +11,5 @@
 ~/dotfiles/
 ~/bash-scripts/
 ~/.doom.d/
+~/.emacs.d/
 ~/.ssh/
