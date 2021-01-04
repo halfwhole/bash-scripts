@@ -1,0 +1,6 @@
+#!/bin/bash
+# Usage: mp4tomp3 <video.mp4> (<audio.mp3>)
+mp4Name="$1"
+defaultMp3Name="$(basename "$1" .mp4).mp3"
+mp3Name="${2:-$defaultMp3Name}"
+ffmpeg -i "$mp4Name" -vn "$mp3Name"
