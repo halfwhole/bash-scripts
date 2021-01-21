@@ -10,6 +10,7 @@ Scripts that I use from time to time.
 | `declare-temp <temp>`           | Declares my temperature on the NUS portal. It runs the main script from my `nus-temperature-declaration` project. |
 | `extract <pdf>`                 | Takes in a PDF file of JPG images, and uses OCR to extract all the words into a single TXT file. Pirates may be interested in this one. |
 | `fix-sound`                     | Runs `sudo alsa force-reload` to fix the sound issue in Ubuntu. I'm putting this into a script because I forget it far too often. |
+| `refresh-gnome`                 | Refreshes gnome because it increasingly lags for some reason in Ubuntu 20.04, after it's been up for a while. |
 | `kill-emacs`                    | Kills emacs, because it freezes way too often. Please fix :( |
 | `luminus-download`              | Downloads files and folders from LumiNUS to my local directory. It runs the main script from my `luminus-downloader` project. |
 | `mp4tomp3 <mp4> (<mp3>)`        | Converts a mp4 file to mp3. |
