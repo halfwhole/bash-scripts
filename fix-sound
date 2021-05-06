@@ -1,2 +1,3 @@
 #!/bin/bash
 sudo alsa force-reload
+# If there's still no sound, check pavucontrol -> Input Devices -> Monitor of Built-in Audio Analog Stereo.
