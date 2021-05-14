@@ -29,3 +29,7 @@ ssh ziwei-do "docker exec nlb_db pg_dump --username postgres nlb" > "$BACKUP_DIR
 # Backup nus-temperature-declaration
 echo "Backing up nus-temperature-declaration..."
 scp -r "$REMOTE_HOST_ALIAS:nus-temperature-declaration/temp.log" "$BACKUP_DIR/temp.log"
+
+# Backup covid-sg-stats
+echo "Backing up covid-sg-stats..."
+scp -r "$REMOTE_HOST_ALIAS:covid-sg-stats/covid-sg-stats.csv" "$BACKUP_DIR/covid-sg-stats.csv"
