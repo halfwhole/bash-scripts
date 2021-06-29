@@ -16,6 +16,7 @@ Scripts that I use from time to time.
 | `mp4tomp3 <mp4> (<mp3>)`        | Converts a mp4 file to mp3. |
 | `soc-print <printer> [<file>]+` | Sends print jobs for selected files to a selected SoC printer over sunfire. |
 | `twitter-download <url>`        | Downloads a Twitter video given its URL. |
+| `youtube-download <url>`        | Downloads a Youtube video given its URL. |
 | `2up <pdf>`                     | Converts a PDF file to 2-up in landscape format, with suffix `-2up`. |
 
 ## Setup
