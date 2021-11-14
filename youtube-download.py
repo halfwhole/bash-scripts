@@ -59,6 +59,7 @@ print('done!')
 # Download video/audio
 extension = '.' + val['f']
 file_name += extension
+file_name = file_name.replace('/', '')  # remove '/'s which are not allowed
 path_file_name = os.path.join(os.path.expanduser(DEST_DIR), file_name)
 print('Downloading %s to %s... ' % (file_name, DEST_DIR), end='', flush=True)
 blob = s.get(download_url).content
