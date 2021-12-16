@@ -1,0 +1,12 @@
+#!/bin/bash
+# Usage: mp3cut <input.mp3> <output.mp3> <start in HH:MM:SS> <end in HH:MM:SS>
+inputMp3Name="$1"
+outputMp3Name="$2"
+startTime="$3"
+endTime="$4"
+startInSeconds="$(echo $startTime| sed 's/^/((/; s/:/)*60+/g' | bc)"
+endInSeconds="$(echo $endTime| sed 's/^/((/; s/:/)*60+/g' | bc)"
+durationInSeconds="$(echo "$endInSeconds"-"$startInSeconds"| bc)"
+defaultMp3Name="$(basename "$1" .mp4).mp3"
+echo $durationInSeconds
+ffmpeg -ss "$startTime" -t "$durationInSeconds" -i "$inputMp3Name" -acodec copy "$outputMp3Name"
