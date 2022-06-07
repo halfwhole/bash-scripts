@@ -1,13 +1,16 @@
+# Note: Do not include '/' at the end of directory names.
+# Doing so will copy the *contents* of the directory over, but not the directory itself - and that's not what we want.
+
 # Directories
-~/Documents/
-~/Music/
-~/Pictures/
-~/Videos/
-~/Downloads/
-~/Archives/
+~/Documents
+~/Music
+~/Pictures
+~/Downloads
+# ~/Videos
+# ~/Archives
 
 # Dotfiles
-~/dotfiles/
-~/bash-scripts/
-~/.emacs.d/
-~/.ssh/
+~/dotfiles
+~/bash-scripts
+~/.emacs.d
+~/.ssh

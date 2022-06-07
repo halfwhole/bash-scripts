@@ -1,9 +1,14 @@
 #!/bin/bash
 
+## Note
+# Backing up to an exFAT drive will lose your permissions info
+# as exFAT does not support permissions.
+
 ## Config
 scriptDir=$(dirname -- "$(readlink -f -- "$BASH_SOURCE")")
 BACKUP_LIST="$scriptDir/backup-list.txt"
-BACKUP_DIR='/media/suntoast/Backup Plus/BACKUPS/'
+BACKUP_DIR='/Volumes/Backup Plus/BACKUPS'
+BACKUP_LOG_FILE='backup.log'
 
 origList=$(cat $BACKUP_LIST | grep -v -E '(^#|^\s*$)')  # Exclude empty lines and #s
 list=${origList//\~/$HOME}                              # Replace '~' with '$HOME'
@@ -21,7 +26,7 @@ if $invalid; then
 fi
 
 ## Prompt for confirmation
-echo 'These locations will be backed up:'
+echo "These locations will be backed up to $BACKUP_DIR:"
 for item in $origList; do
     echo $item
 done
@@ -32,8 +37,13 @@ if [[ $y != 'y' ]]; then
 fi
 
 ## Backup using rsync
-for item in $list; do
-    bname=$(basename $item)
-    location="$BACKUP_DIR$bname"
-    rsync -av --delete "$item" "$location"
-done
+rsync --archive \
+      --delete \
+      --progress \
+      --human-readable \
+      --exclude="node_modules" \
+      --exclude=".DS_Store" \
+      $list \
+      "$BACKUP_DIR" \
+      | tee "$BACKUP_DIR/$BACKUP_LOG_FILE"
+
