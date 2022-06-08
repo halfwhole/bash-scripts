@@ -1,12 +1,18 @@
 #!/bin/bash
 
+# Configs
+BACKUP_DRIVE='/Volumes/Backup Plus/'
+BACKUP_DIR='BACKUPS/'
+
 date=$(TZ=Singapore date +%Y-%m-%d)
-BACKUP_DIR='/Volumes/Backup Plus/BACKUPS/'
 BACKUP_DUMP="backup-$date.tar.gz"
 
+# Set directory to backup drive
+cd "$BACKUP_DRIVE"
+
 # Prompt
-echo "Ensure that there is sufficient disk space in the current directory $(pwd)."
-read -p "This will zip $BACKUP_DIR into $BACKUP_DUMP. Continue? (y) " y
+echo "Ensure that there is sufficient disk space in the backup directory $BACKUP_DRIVE."
+read -p "This will zip $BACKUP_DRIVE$BACKUP_DIR into $BACKUP_DUMP. Continue? (y) " y
 if [[ $y != 'y' ]]; then
     echo 'Exiting.'
     exit 0
@@ -18,5 +24,5 @@ size=$(du -sk "$BACKUP_DIR" | cut -f 1)
 echo "Size is $size kiB"
 
 # Backup with progress bar
-tar cf - "$BACKUP_DIR" | pv -s ${size}k | gzip > "$BACKUP_DIR$BACKUP_DUMP"
+tar cf - "$BACKUP_DIR" | pv -s ${size}k | gzip > "$BACKUP_DUMP"
 

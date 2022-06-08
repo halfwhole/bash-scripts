@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# This script compresses mp4 files with H.264 video encoding.
+
+# Get filename and extension
+file=$1
+extension="${file##*.}"
+filename="${file%.*}"
+
+# Compress with ffmpeg
+ffmpeg -i "${filename}.${extension}" -vcodec libx264 -crf 24 "${filename}x.${extension}"
+
