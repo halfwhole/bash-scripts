@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Note: you must be authenticated with gcloud first to access cloud storage.
+
+# To do the reverse (copy the backup to local storage), run this:
+# gsutil cp gs://ziwei-backups-bucket/backup-<DATE>.tar.gz.gpg <SAVE_TO_LOCATION>
+
+date=$(TZ=Singapore date +%Y-%m-%d)
+BACKUP_DUMP="backup-$date.tar.gz.gpg"
+BACKUP_CLOUD_BUCKET="gs://ziwei-backups-bucket"
+
+# Prompt
+read -p "This will copy your backup file $BACKUP_DUMP into your cloud storage bucket. Continue? (y) " y
+if [[ $y != 'y' ]]; then
+    exit 0
+fi
+
+# Copy backup file to cloud storage
+gsutil cp "$BACKUP_DUMP" "$BACKUP_CLOUD_BUCKET"
+

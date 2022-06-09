@@ -32,7 +32,6 @@ for item in $origList; do
 done
 read -p 'Do you wish to proceed? (y) ' y
 if [[ $y != 'y' ]]; then
-    echo 'Exiting.'
     exit 0
 fi
 
