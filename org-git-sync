@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Add org file changes to the repository
+# Credits: http://doc.norang.ca/org-mode.html#HourlyCommits
+
+# For hourly automatic saves, put this in crontab: 0 * * * * /path/to/org-git-sync >/dev/null
+# - On MacOS, need full disk access for cron: https://apple.stackexchange.com/questions/378553/crontab-operation-not-permitted
+
+REPOS="Documents/work-notes" # relative to ~
+
+for REPO in $REPOS
+do
+    echo "Repository: $REPO"
+    cd ~/$REPO
+    # Remove deleted files
+    git ls-files --deleted -z | xargs -0 git rm >/dev/null 2>&1
+    # Add new files
+    git add . >/dev/null 2>&1
+    git commit -m "$(date)"
+done
